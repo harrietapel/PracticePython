@@ -1,30 +1,41 @@
 from math import *
 from random import *
 
-k=3
+n_clusters=3
 
-lines = open('samples.csv', 'r').readlines()
-ps=[]
-for line in lines: ps.append(tuple(map(float, line.strip().split(','))))
+lines = open('data/samples.csv', 'r').readlines()
+points = []
+for line in lines: points.append(tuple(map(float, line.strip().split(','))))
 
-m=[ps[randrange(len(ps))], ps[randrange(len(ps))], ps[randrange(len(ps))]]
+# Picks three random points to be initial centres of the clusters
+cluster_centre = [points[randrange(len(points))], points[randrange(len(points))], points[randrange(len(points))]]
 
-alloc=[None]*len(ps)
-n=0
-while n<10:
-  for i in range(len(ps)):
-    p=ps[i]
-    d=[None] * 3
-    d[0]=sqrt((p[0]-m[0][0])**2 + (p[1]-m[0][1])**2)
-    d[1]=sqrt((p[0]-m[1][0])**2 + (p[1]-m[1][1])**2)
-    d[2]=sqrt((p[0]-m[2][0])**2 + (p[1]-m[2][1])**2)
-    alloc[i]=d.index(min(d))
-  for i in range(3):
-    alloc_ps=[p for j, p in enumerate(ps) if alloc[j] == i]
-    new_mean=(sum([a[0] for a in alloc_ps]) / len(alloc_ps), sum([a[1] for a in alloc_ps]) / len(alloc_ps))
-    m[i]=new_mean
-  n=n+1
+cluster_allocation = [None]*len(points)
+iteration = 0
+while iteration<10:
+    for i in range(len(points)):
+        p = points[i]
+        distance = [None] * 3
+        # Assign each data point to a cluster.
+        distance[0] = sqrt((p[0]-cluster_centre[0][0])**2 + (p[1]-cluster_centre[0][1])**2)
+        distance[1] = sqrt((p[0]-cluster_centre[1][0])**2 + (p[1]-cluster_centre[1][1])**2)
+        distance[2] = sqrt((p[0]-cluster_centre[2][0])**2 + (p[1]-cluster_centre[2][1])**2)
+        cluster_allocation[i] = distance.index(min(distance))
+    # Update the centre of each cluster by setting it to the average of all points assigned to the cluster
+    for i in range(3):
+        cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
+        new_mean = (sum([point[0] for point in cluster_points]) / len(cluster_points), sum([point[1] for point in cluster_points]) / len(cluster_points))
+        cluster_centre[i] = new_mean
+    iteration = iteration+1
 
 for i in range(3):
-  alloc_ps=[p for j, p in enumerate(ps) if alloc[j] == i]
-  print("Cluster " + str(i) + " is centred at " + str(m[i]) + " and has " + str(len(alloc_ps)) + " points.")
+    cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
+    print("Cluster " + str(i) + " is centred at " + str(cluster_centre[i]) + " and has " + str(len(cluster_points)) + " points.")
+
+
+# Visualising the output of the algorithm
+from matplotlib import pyplot as plt
+for i in range(3):
+    cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
+    plt.scatter([point[0] for point in cluster_points], [point[1] for point in cluster_points])
+plt.show()
