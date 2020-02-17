@@ -1,6 +1,15 @@
 from math import sqrt
 from random import seed, randrange
 
+def find_distance(a, b):
+    '''
+    Calculates the distance between two points a and b in 2d using pythagoras,
+    returns the distance.
+    '''
+    diff_x = a[0]-b[0]
+    diff_y = a[1]-b[1]
+    return sqrt((diff_x)**2+(diff_y)**2)
+
 n_clusters=3
 
 lines = open('data/samples.csv', 'r').readlines()
@@ -18,9 +27,9 @@ while iteration<iters:
     for index, point in enumerate(points):
         distance = [None] * n_clusters
         # Assign each data point to a cluster, specific to 3 clusters currently
-        distance[0] = sqrt((point[0]-cluster_centre[0][0])**2 + (point[1]-cluster_centre[0][1])**2)
-        distance[1] = sqrt((point[0]-cluster_centre[1][0])**2 + (point[1]-cluster_centre[1][1])**2)
-        distance[2] = sqrt((point[0]-cluster_centre[2][0])**2 + (point[1]-cluster_centre[2][1])**2)
+        distance[0] = find_distance(point,cluster_centre[0])
+        distance[1] = find_distance(point,cluster_centre[1])
+        distance[2] = find_distance(point,cluster_centre[2])
         cluster_allocation[index] = distance.index(min(distance))
     # Update the centre of each cluster by setting it to the average of all points assigned to the cluster
     for i, cluster in enumerate(cluster_centre):
