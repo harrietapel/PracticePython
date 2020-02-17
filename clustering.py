@@ -1,5 +1,6 @@
 from math import sqrt
 from random import seed, randrange
+from argparse import ArgumentParser
 
 
 def find_distance(a, b):
@@ -54,13 +55,19 @@ def cluster(points,iters=10):
         cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
         plt.scatter([point[0] for point in cluster_points], [point[1] for point in cluster_points])
     plt.show()
-
     return cluster_centre, cluster_allocation
 
-points = []
-with open('data/samples.csv', 'r') as source_file:
-    lines = source_file.readlines()
-    for line in lines: 
-        points.append(tuple(map(float, line.strip().split(','))))
+if __name__ == "__main__":
+    parser = ArgumentParser(description='Performs k-means algorithm to cluster data points')
+    parser.add_argument('samples_file', type=str, 
+                        help='csv filename including list of data points')
+    parser.add_argument('--iters', type=int, default=10,
+                        help='number of iterations for algorithm (default:10)' )
+    args = parser.parse_args()
 
-cluster(points, iters=5)
+    points = []
+    with open(args.samples_file, 'r') as source_file:
+        lines = source_file.readlines()
+        for line in lines: 
+            points.append(tuple(map(float, line.strip().split(','))))
+    cluster(points, iters=args.iters)
