@@ -1,5 +1,5 @@
-from math import *
-from random import *
+from math import sqrt
+from random import seed, randrange
 
 n_clusters=3
 
