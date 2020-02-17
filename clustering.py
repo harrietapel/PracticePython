@@ -25,8 +25,9 @@ while iteration<iters:
     # Update the centre of each cluster by setting it to the average of all points assigned to the cluster
     for i, cluster in enumerate(cluster_centre):
         cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
-        new_mean = (sum([point[0] for point in cluster_points]) / len(cluster_points), sum([point[1] for point in cluster_points]) / len(cluster_points))
-        cluster_centre[i] = new_mean
+        av_x = sum([point[0] for point in cluster_points]) / len(cluster_points)
+        av_y = sum([point[1] for point in cluster_points]) / len(cluster_points)
+        cluster_centre[i] = (av_x, av_y)
     iteration = iteration+1
 
 for i, cluster in enumerate(cluster_centre):
