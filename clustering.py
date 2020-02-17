@@ -1,6 +1,7 @@
 from math import sqrt
 from random import seed, randrange
 from argparse import ArgumentParser
+from time import time
 
 
 def find_distance(a, b):
@@ -24,7 +25,7 @@ def cluster(points,iters=10):
     '''
     n_clusters=3
     # Picks three random points to be initial centres of the clusters
-    seed(1)
+    #seed(1)
     cluster_centre = [points[randrange(len(points))], points[randrange(len(points))], points[randrange(len(points))]]
 
     cluster_allocation = [None]*len(points)
@@ -50,11 +51,11 @@ def cluster(points,iters=10):
         print("Cluster " + str(i) + " is centred at " + str(cluster) + " and has " + str(len(cluster_points)) + " points.")
 
     # Visualising the output of the algorithm
-    from matplotlib import pyplot as plt
-    for i in range(n_clusters):
-        cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
-        plt.scatter([point[0] for point in cluster_points], [point[1] for point in cluster_points])
-    plt.show()
+    #from matplotlib import pyplot as plt
+    #for i in range(n_clusters):
+    #    cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
+    #    plt.scatter([point[0] for point in cluster_points], [point[1] for point in cluster_points])
+    #plt.show()
     return cluster_centre, cluster_allocation
 
 if __name__ == "__main__":
@@ -71,3 +72,4 @@ if __name__ == "__main__":
         for line in lines: 
             points.append(tuple(map(float, line.strip().split(','))))
     cluster(points, iters=args.iters)
+    

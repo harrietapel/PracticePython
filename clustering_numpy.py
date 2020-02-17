@@ -2,6 +2,7 @@ from math import sqrt
 from random import seed, randrange
 from argparse import ArgumentParser
 import numpy as np
+from time import time
 
 
 def find_distance(a, b):
@@ -28,15 +29,15 @@ def cluster(points,iters=10):
     rng = np.random.default_rng()
     cluster_centre = rng.choice(points,n_clusters)
     
-    ### TO MAKE SURE IT STILL WORKS
-    cluster_centre = np.array([[3.83531, 3.88187], [0.54287, 2.37466], [5.75247, 4.68959]])
+    ### TO COMPARE WITH SEED
+    #cluster_centre = np.array([[3.83531, 3.88187], [0.54287, 2.37466], [5.75247, 4.68959]])
     
     iteration = 0
     while iteration<iters:
         # Assign each data point to a cluster
         distances = np.repeat(points,n_clusters,axis=0).reshape(points.shape[0],n_clusters,2)
         distances = np.subtract(distances, cluster_centre)
-        distances = np.apply_along_axis(np.linalg.norm, 2, distances)
+        distances = np.sqrt(np.sum(distances**2,axis=2))
         cluster_allocation = np.argmin(distances, 1)
         # Update the centre of each cluster by setting it to the average of all points assigned to the cluster
         sorted_points = points[np.argsort(cluster_allocation)]
@@ -51,12 +52,12 @@ def cluster(points,iters=10):
         print("Cluster " + str(i) + " is centred at " + str(cluster) + " and has " + str(n_points[i]) + " points.")
 
     # Visualising the output of the algorithm
-    from matplotlib import pyplot as plt
-    for i in range(n_clusters):
-        cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
-        plt.scatter([point[0] for point in cluster_points], [point[1] for point in cluster_points])
-    plt.show()
-    
+    #from matplotlib import pyplot as plt
+    #for i in range(n_clusters):
+    #    cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
+    #    plt.scatter([point[0] for point in cluster_points], [point[1] for point in cluster_points])
+    #plt.show()
+
     return cluster_centre, cluster_allocation
 
 if __name__ == "__main__":
