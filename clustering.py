@@ -3,7 +3,7 @@ from random import seed, randrange
 
 def find_distance(a, b):
     '''
-    Calculates the distance between two points a and b in 2d using pythagoras,
+    Calculates the distance between two input points a and b in 2d using pythagoras,
     returns the distance.
     '''
     diff_x = a[0]-b[0]
@@ -11,10 +11,11 @@ def find_distance(a, b):
     return sqrt((diff_x)**2+(diff_y)**2)
 
 n_clusters=3
-
-lines = open('data/samples.csv', 'r').readlines()
 points = []
-for line in lines: points.append(tuple(map(float, line.strip().split(','))))
+with open('data/samples.csv', 'r') as source_file:
+    lines = source_file.readlines()
+    for line in lines: 
+        points.append(tuple(map(float, line.strip().split(','))))
 
 # Picks three random points to be initial centres of the clusters
 seed(1)
