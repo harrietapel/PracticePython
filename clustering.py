@@ -41,9 +41,10 @@ def cluster(points,iters=10):
         # Update the centre of each cluster by setting it to the average of all points assigned to the cluster
         for i, cluster in enumerate(cluster_centre):
             cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
-            av_x = sum([point[0] for point in cluster_points]) / len(cluster_points)
-            av_y = sum([point[1] for point in cluster_points]) / len(cluster_points)
-            cluster_centre[i] = (av_x, av_y)
+            if len(cluster_points) >= 1:
+                av_x = sum([point[0] for point in cluster_points]) / len(cluster_points)
+                av_y = sum([point[1] for point in cluster_points]) / len(cluster_points)
+                cluster_centre[i] = (av_x, av_y)
         iteration = iteration+1
 
     return cluster_centre, cluster_allocation

@@ -5,17 +5,7 @@ import numpy as np
 from time import time
 
 
-def find_distance(a, b):
-    '''
-    Calculates the distance between two input points a and b in 2d using pythagoras,
-    returns the distance.
-    '''
-    diff_x = a[0]-b[0]
-    diff_y = a[1]-b[1]
-    return sqrt((diff_x)**2+(diff_y)**2)
-
-
-def cluster(points,iters=10):
+def cluster_np(points,iters=10):
     '''
     Takes a list of points as tuples and performs the k-means algorithm to cluster
     data points into separate clusters. Optional argument iters is the number of 
@@ -61,7 +51,7 @@ if __name__ == "__main__":
     with open(args.samples_file, 'r') as source_file:
         points = np.genfromtxt(source_file, dtype=float, delimiter=',')
     
-    cluster_centre, cluster_allocation = cluster(points, iters=args.iters)
+    cluster_centre, cluster_allocation = cluster_np(points, iters=args.iters)
 
     for i, cluster in enumerate(cluster_centre):
         cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
