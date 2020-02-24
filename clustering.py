@@ -46,16 +46,6 @@ def cluster(points,iters=10):
             cluster_centre[i] = (av_x, av_y)
         iteration = iteration+1
 
-    for i, cluster in enumerate(cluster_centre):
-        cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
-        print("Cluster " + str(i) + " is centred at " + str(cluster) + " and has " + str(len(cluster_points)) + " points.")
-
-    # Visualising the output of the algorithm
-    #from matplotlib import pyplot as plt
-    #for i in range(n_clusters):
-    #    cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
-    #    plt.scatter([point[0] for point in cluster_points], [point[1] for point in cluster_points])
-    #plt.show()
     return cluster_centre, cluster_allocation
 
 if __name__ == "__main__":
@@ -71,5 +61,16 @@ if __name__ == "__main__":
         lines = source_file.readlines()
         for line in lines: 
             points.append(tuple(map(float, line.strip().split(','))))
-    cluster(points, iters=args.iters)
-    
+
+    cluster_centre, cluster_allocation = cluster(points, iters=args.iters)
+
+    for i, cluster in enumerate(cluster_centre):
+        cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
+        print("Cluster " + str(i) + " is centred at " + str(cluster) + " and has " + str(len(cluster_points)) + " points.")
+
+    # Visualising the output of the algorithm
+    #from matplotlib import pyplot as plt
+    #for i in range(n_clusters):
+    #    cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
+    #    plt.scatter([point[0] for point in cluster_points], [point[1] for point in cluster_points])
+    #plt.show()
