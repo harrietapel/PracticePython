@@ -17,7 +17,7 @@ def cluster_np(points,iters=10):
     n_clusters = 3
     # Picks three random points to be initial centres of the clusters
     rng = np.random.default_rng()
-    cluster_centre = rng.choice(points,n_clusters)
+    cluster_centre = rng.choice(points,n_clusters,replace=False)
     
     ### TO COMPARE WITH SEED
     #cluster_centre = np.array([[3.83531, 3.88187], [0.54287, 2.37466], [5.75247, 4.68959]])
