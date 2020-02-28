@@ -5,7 +5,7 @@ import numpy as np
 from time import time
 
 
-def cluster_np(points,iters=10):
+def cluster(points,iters=10):
     '''
     Takes a list of points as tuples and performs the k-means algorithm to cluster
     data points into separate clusters. Optional argument iters is the number of 
@@ -40,6 +40,17 @@ def cluster_np(points,iters=10):
 
     return cluster_centre, cluster_allocation
 
+
+def numpy_load(filename):
+    '''
+    Loads data from a csv file in filename using numpy functions and returns 
+    points as a numpy array
+    '''
+    with open(filename, 'r') as source_file:
+        points = np.genfromtxt(source_file, dtype=float, delimiter=',')
+    return points
+
+
 if __name__ == "__main__":
     parser = ArgumentParser(description='Performs k-means algorithm to cluster data points')
     parser.add_argument('samples_file', type=str, 
@@ -48,10 +59,9 @@ if __name__ == "__main__":
                         help='number of iterations for algorithm (default:10)' )
     args = parser.parse_args()
 
-    with open(args.samples_file, 'r') as source_file:
-        points = np.genfromtxt(source_file, dtype=float, delimiter=',')
+    points = numpy_load(args.samples_file)
     
-    cluster_centre, cluster_allocation = cluster_np(points, iters=args.iters)
+    cluster_centre, cluster_allocation = cluster(points, iters=args.iters)
 
     for i, cluster in enumerate(cluster_centre):
         cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]

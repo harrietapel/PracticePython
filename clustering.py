@@ -49,6 +49,20 @@ def cluster(points,iters=10):
 
     return cluster_centre, cluster_allocation
 
+
+def plain_load(filename):
+    '''
+    Loads data from a csv file in filename using for loops and returns points
+    as a list of tuples
+    '''
+    points = []
+    with open(filename, 'r') as source_file:
+        lines = source_file.readlines()
+        for line in lines: 
+            points.append(tuple(map(float, line.strip().split(','))))
+    return points
+
+
 if __name__ == "__main__":
     parser = ArgumentParser(description='Performs k-means algorithm to cluster data points')
     parser.add_argument('samples_file', type=str, 
@@ -57,11 +71,7 @@ if __name__ == "__main__":
                         help='number of iterations for algorithm (default:10)' )
     args = parser.parse_args()
 
-    points = []
-    with open(args.samples_file, 'r') as source_file:
-        lines = source_file.readlines()
-        for line in lines: 
-            points.append(tuple(map(float, line.strip().split(','))))
+    points = plain_load(args.samples_file)
 
     cluster_centre, cluster_allocation = cluster(points, iters=args.iters)
 
@@ -69,9 +79,9 @@ if __name__ == "__main__":
         cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
         print("Cluster " + str(i) + " is centred at " + str(cluster) + " and has " + str(len(cluster_points)) + " points.")
 
-    # Visualising the output of the algorithm
+    ## Visualising the output of the algorithm
     #from matplotlib import pyplot as plt
-    #for i in range(n_clusters):
+    #for i in range(3):
     #    cluster_points = [point for ind, point in enumerate(points) if cluster_allocation[ind] == i]
     #    plt.scatter([point[0] for point in cluster_points], [point[1] for point in cluster_points])
     #plt.show()
